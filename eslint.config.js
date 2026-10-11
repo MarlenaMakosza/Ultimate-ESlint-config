@@ -5,15 +5,14 @@ import html from '@html-eslint/eslint-plugin';
 import htmlParser from '@html-eslint/parser';
 import panda from '@pandacss/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
-import ts from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
 import vitest from '@vitest/eslint-plugin';
 import prettier from 'eslint-config-prettier';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import drizzle from 'eslint-plugin-drizzle';
 import esEs from 'eslint-plugin-eslint-plugin';
 import functional from 'eslint-plugin-functional';
-import esImport from 'eslint-plugin-import';
-import alias from 'eslint-plugin-import-alias';
+import importAlias from '@dword-design/eslint-plugin-import-alias';
+import esImport from 'eslint-plugin-import-x';
 import node from 'eslint-plugin-n';
 import perfectionist from 'eslint-plugin-perfectionist';
 import promise from 'eslint-plugin-promise';
@@ -24,7 +23,13 @@ import tailwind from 'eslint-plugin-tailwindcss';
 import tsDoc from 'eslint-plugin-tsdoc';
 import unicorn from 'eslint-plugin-unicorn';
 import svelteParser from 'svelte-eslint-parser';
-import markdown from "@eslint/markdown";
+import tseslint from 'typescript-eslint';
+import markdown from '@eslint/markdown';
+
+const ts = tseslint.plugin;
+const tsParser = tseslint.parser;
+// typescript-eslint ships presets as flat config arrays — merge their rules
+const rulesOf = configs => Object.assign({}, ...configs.map(config => config.rules ?? {}));
 
 // IMPORTANT! If you want see what rules is in use, just run in terminal: npx @eslint/config-inspector
 // For most plugins you can check their docs via this tool
@@ -103,19 +108,15 @@ export default [
 			sonarjs: sonarjs,
 			promise: promise,
 			drizzle: drizzle,
-			import: esImport,
+			'import-x': esImport,
 			security: security,
-			alias: alias,
+			'@dword-design/import-alias': importAlias.configs.recommended.plugins['@dword-design/import-alias'],
 			node: node,
 			cspell: cspell,
 			vitest: vitest,
 		},
 		settings: {
-			'import/resolver': {
-				typescript: {
-					alwaysTryTypes: true,
-				},
-			},
+			'import-x/resolver-next': [createTypeScriptImportResolver({ alwaysTryTypes: true })],
 		},
 		rules: {
 			...(cspellFlag && {
@@ -159,7 +160,6 @@ export default [
 				'node/no-restricted-import': 'off',
 				'node/no-restricted-require': 'off',
 				'node/no-missing-import': 'off',
-				'node/no-hide-core-modules': 'off', // deprecated
 				'node/no-process-env': 'off',
 				'node/no-process-exit': 'off',
 				'node/file-extension-in-import': 'off',
@@ -179,7 +179,7 @@ export default [
 				'svelte/require-store-callbacks-use-set-param': 'error',
 				'svelte/require-store-reactive-access': 'error',
 				'svelte/valid-prop-names-in-kit-pages': 'error',
-				'svelte/no-goto-without-base': 'error',
+				'svelte/no-navigation-without-resolve': 'error', // was 'svelte/no-goto-without-base' (deprecated)
 
 				// Security
 				'svelte/no-target-blank': 'error',
@@ -257,17 +257,17 @@ export default [
 			}),
 			/* alias rules */
 			...(aliasFlag && {
-				'alias/import-alias': [
+				// Aliases from tsconfig.json `paths` are read automatically (shouldReadTsConfig: true by default)
+				'@dword-design/import-alias/prefer-alias': [
 					'error',
 					{
-						relativeDepth: 1,
-						rootDir: import.meta.dirname,
-						aliases: [
-							{ alias: '@src', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
-							{ alias: '@routes', matcher: '^src/routes' }, // src/routes/modules/app/test -> @routes/modules/app/test
-							{ alias: '@test', matcher: '^test/unit' }, // test/unit/modules/app -> @test/modules/app
-							{ alias: '@testRoot', matcher: '^(test)/e2e' }, // test/e2e/modules/app -> @testRoot/e2e/modules/app
-						],
+						aliasForSubpaths: false, // keep ./sibling imports relative, alias only ../parent paths
+						alias: {
+							'@src': './src', // src/modules/app/test -> @src/modules/app/test
+							'@routes': './src/routes', // src/routes/modules/app/test -> @routes/modules/app/test
+							'@test': './test/unit', // test/unit/modules/app -> @test/modules/app
+							'@testRoot': './test', // test/e2e/modules/app -> @testRoot/e2e/modules/app
+						},
 					},
 				],
 			}),
@@ -343,21 +343,21 @@ export default [
 
 			/* import rules */
 			...(esImportFlag && {
-				'import/named': 'error',
-				'import/default': 'error',
-				'import/no-named-as-default': 'error',
-				'import/no-anonymous-default-export': 'error',
-				'import/no-duplicates': 'error',
-				'import/no-absolute-path': 'error',
-				'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+				'import-x/named': 'error',
+				'import-x/default': 'error',
+				'import-x/no-named-as-default': 'error',
+				'import-x/no-anonymous-default-export': 'error',
+				'import-x/no-duplicates': 'error',
+				'import-x/no-absolute-path': 'error',
+				'import-x/no-useless-path-segments': ['error', { noUselessIndex: true }],
 
 				// Useless
-				'import/extensions': 'off',
-				'import/no-restricted-paths': 'off',
-				'import/order': 'off',
-				'import/no-mutable-exports': 'off',
-				'import/no-unresolved': 'off', //"If you're using a module bundler other than Node or Webpack, you may end up with a lot of false positive reports of missing dependencies."
-				'import/no-extraneous-dependencies': 'off',
+				'import-x/extensions': 'off',
+				'import-x/no-restricted-paths': 'off',
+				'import-x/order': 'off',
+				'import-x/no-mutable-exports': 'off',
+				'import-x/no-unresolved': 'off', //"If you're using a module bundler other than Node or Webpack, you may end up with a lot of false positive reports of missing dependencies."
+				'import-x/no-extraneous-dependencies': 'off',
 			}),
 			/* functional rules */
 			...(functionalFlag && {
@@ -652,8 +652,8 @@ export default [
 						ignore: ['README.md'],
 					},
 				],
-				'unicorn/no-array-for-each': 'error',
-				'unicorn/prevent-abbreviations': [
+				'unicorn/no-for-each': 'error', // was 'unicorn/no-array-for-each' (removed)
+				'unicorn/name-replacements': [ // was 'unicorn/prevent-abbreviations' (deprecated)
 					'error',
 					{ allowList: { req: true, res: true, db: true, rel: true, char: true, env: true } },
 				],
@@ -687,7 +687,6 @@ export default [
 						before: true,
 					},
 				],
-				'@stylistic/multiline-comment-stylistic': 'off',
 				'@stylistic/no-multiple-empty-lines': [
 					'error',
 					{
@@ -709,13 +708,12 @@ export default [
 				'@stylistic/quotes': [
 					'error',
 					'single',
-					{ allowTemplateLiterals: true, avoidEscape: true },
+					{ allowTemplateLiterals: 'always', avoidEscape: true },
 				],
 				'@stylistic/semi': ['error', 'always'],
 				'@stylistic/function-call-spacing': ['error', 'never'],
 				'@stylistic/function-call-argument-newline': ['error', 'consistent'],
 				'@stylistic/jsx-self-closing-comp': 'error',
-				'@stylistic/jsx-props-no-multi-spaces': 'error',
 				'@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 3}],
 				'@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
 				'@stylistic/switch-colon-spacing': ['error', { after: true, before: false }],
@@ -732,7 +730,6 @@ export default [
 				// '@stylistic/max-len': 'off',
 
 				// Disabled because Prettier/impractical
-				'@stylistic/func-call-spacing': 'off', // same as `@stylistic/function-call-spacing`
 				'@stylistic/no-extra-semi': 'off',
 				'@stylistic/multiline-ternary': 'off',
 				'@stylistic/one-var-declaration-per-line': 'off',
@@ -741,7 +738,6 @@ export default [
 				'@stylistic/implicit-arrow-linebreak': 'off',
 				'@stylistic/generator-star-spacing': 'off',
 				'@stylistic/jsx-newline': 'off',
-				'@stylistic/jsx-sort-props': 'off',
 				'@stylistic/jsx-pascal-case': 'off',
 				'@stylistic/line-comment-position': 'off',
 				'@stylistic/multiline-comment-style': 'off',
@@ -753,8 +749,8 @@ export default [
 
 			...(typescriptFlag && {
 				/* TypeScript rules */
-				// ...ts.configs.recommended.rules,
-				...ts.configs.strict.rules,
+				// ...rulesOf(tseslint.configs.recommended),
+				...rulesOf(tseslint.configs.strict),
 
 				/* Not configurable */
 				'@typescript-eslint/prefer-optional-chain': 'error',
@@ -787,8 +783,7 @@ export default [
 				'@typescript-eslint/no-useless-constructor': 'error',
 				'@typescript-eslint/no-confusing-non-null-assertion': 'error',
 				'@typescript-eslint/no-deprecated': 'error',
-				'no-loop-func': 'off',
-				'@typescript-eslint/no-loop-func': 'error',
+				'no-loop-func': 'error', // '@typescript-eslint/no-loop-func' is deprecated, the core rule handles TS now
 				'@typescript-eslint/no-redundant-type-constituents': 'error',
 				'@typescript-eslint/no-duplicate-enum-values': 'error',
 				'@typescript-eslint/no-array-delete': 'error',
@@ -960,7 +955,6 @@ export default [
 						allowNullableObject: false,
 					},
 				],
-				'no-return-await': 'off',
 				'@typescript-eslint/return-await': ['error', 'in-try-catch'],
 				'@typescript-eslint/restrict-plus-operands': [
 					'error',
@@ -1006,14 +1000,12 @@ export default [
 				// Disabled for some reason
 				'no-throw-literal': 'off',
 				'@typescript-eslint/only-throw-error': 'off', // Because detect sveltekit errors as bad
-				'@typescript-eslint/typedef': 'off', // If you use strict: true, you don't need this rule!
 				'init-declarations': 'off',
 				'@typescript-eslint/init-declarations': 'off',
 				'@typescript-eslint/member-ordering': 'off', // perfectionist
 				'@typescript-eslint/naming-convention': 'off',
 				'@typescript-eslint/no-restricted-types': 'off',
 				'no-restricted-imports': 'off',
-				'@typescript-eslint/no-restricted-imports': 'off',
 				// "The code problem checked by this ESLint rule is automatically checked by the TypeScript compiler.
 				// Thus, it is not recommended to turn on this rule in new TypeScript projects."
 				// https://typescript-eslint.io/rules/no-redeclare/
@@ -1043,6 +1035,18 @@ export default [
 		},
 	},
 	{
+		// svelte-eslint-parser 1.x no longer hands non-Svelte files to the inner parser
+		name: 'TypeScript parser override',
+		files: ['**/*.{ts,tsx,js,jsx,cjs,mjs}'],
+		languageOptions: {
+			parser: tsParser,
+			parserOptions: {
+				project: './tsconfig.json',
+				tsconfigRootDir: import.meta.dirname,
+			},
+		},
+	},
+	{
 		name: 'Tests',
 		plugins: {
 			js: js,
@@ -1060,7 +1064,6 @@ export default [
 				...vitest.configs.recommended.rules,
 				'vitest/prefer-strict-boolean-matchers': 'error',
 				'vitest/no-conditional-in-test': 'error',
-				'vitest/no-done-callback': 'off', //deprecated
 				'vitest/consistent-test-filename': ['error', { pattern: '.*\\.(spec|test)\\.[jt]s$' }],
 				'vitest/consistent-test-it': 'error',
 				'vitest/expect-expect': [
@@ -1198,28 +1201,28 @@ export default [
 			parser: htmlParser,
 		},
 		plugins: {
-			'@html-eslint': html,
+			html: html, // plugin key is 'html' since @html-eslint 0.58
 		},
 		rules: {
 			...(htmlFlag && {
 				...html.configs.recommended.rules,
-				'@html-eslint/indent': ['error', 'tab'],
-				'@html-eslint/no-extra-spacing-attrs': 'off',
-				'@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
-				'@html-eslint/require-meta-charset': 'error',
-				'@html-eslint/lowercase': 'error',
-				'@html-eslint/require-input-label': 'error',
-				'@html-eslint/require-explicit-size': 'error',
-				'@html-eslint/no-trailing-spaces': 'error',
-				'@html-eslint/no-extra-spacing-text': 'error',
-				'@html-eslint/require-meta-description': 'error',
-				'@html-eslint/require-frame-title': 'error',
-				'@html-eslint/no-non-scalable-viewport': 'error',
-				'@html-eslint/no-target-blank': 'error',
-				'@html-eslint/require-button-type': 'error',
-				'@html-eslint/no-heading-inside-button': 'error',
-				'@html-eslint/require-form-method': 'error',
-				'@html-eslint/sort-attrs': 'error',
+				'html/indent': ['error', 'tab'],
+				'html/no-extra-spacing-tags': 'off', // was 'html/no-extra-spacing-attrs' (deprecated)
+				'html/require-closing-tags': ['error', { selfClosing: 'always' }],
+				'html/require-meta-charset': 'error',
+				'html/lowercase': 'error',
+				'html/require-input-label': 'error',
+				'html/require-explicit-size': 'error',
+				'html/no-trailing-spaces': 'error',
+				'html/no-extra-spacing-text': 'error',
+				'html/require-meta-description': 'error',
+				'html/require-frame-title': 'error',
+				'html/no-non-scalable-viewport': 'error',
+				'html/no-target-blank': 'error',
+				'html/require-button-type': 'error',
+				'html/no-heading-inside-button': 'error',
+				'html/require-form-method': 'error',
+				'html/sort-attrs': 'error',
 			}),
 		},
 	},

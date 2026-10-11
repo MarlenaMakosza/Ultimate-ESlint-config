@@ -1,21 +1,31 @@
-# eslint-ultimate-config
+# Ultimate-ESlint-config
 One file, many plugins – just copy and paste.
+
+Every rule of every plugin is listed in [rules.md](rules.md), including the ones you will probably turn off.
+Rule lists checked against ESLint 10.12 and the plugin versions available on 2026-10-11.
 
 ## Eslint plugins
 
-### If you want install all at once
+### Exact versions from this repo
+`package.json` pins every package to the version `rules.md` and `eslint.config.js` were checked against (Node `^22.22.2 || >=24.15.0`).
 ```
-npm install --save-dev @eslint/js typescript-eslint typescript svelte-eslint-parser eslint-plugin-svelte prettier-plugin-svelte @html-eslint/parser @html-eslint/eslint-plugin eslint-plugin-tailwindcss @pandacss/eslint-plugin eslint-plugin-drizzle @vitest/eslint-plugin eslint-plugin-perfectionist eslint-plugin-unicorn @stylistic/eslint-plugin eslint-plugin-functional eslint-config-prettier prettier-plugin-organize-imports eslint-plugin-security eslint-plugin-sonarjs eslint-plugin-tsdoc eslint-plugin-promise @cspell/eslint-plugin eslint-plugin-import eslint-plugin-import-alias eslint-plugin-eslint-plugin @eslint/json eslint-plugin-regexp @eslint/markdown yaml-eslint-parser eslint-plugin-yml eslint-plugin-node
+npm install
+```
+
+### If you want install all at once
+`eslint@^10` and `typescript@~6.0` are pinned on purpose: without them npm can pick ESLint 9 (peer conflict, install fails) or TypeScript 7 (not supported by typescript-eslint yet).
+```
+npm install --save-dev eslint@^10 @eslint/js typescript-eslint typescript@~6.0 svelte-eslint-parser eslint-plugin-svelte prettier-plugin-svelte @html-eslint/parser @html-eslint/eslint-plugin eslint-plugin-tailwindcss eslint-plugin-better-tailwindcss @pandacss/eslint-plugin eslint-plugin-drizzle @vitest/eslint-plugin eslint-plugin-perfectionist eslint-plugin-unicorn @stylistic/eslint-plugin eslint-plugin-functional eslint-config-prettier prettier-plugin-organize-imports eslint-plugin-security eslint-plugin-sonarjs eslint-plugin-tsdoc eslint-plugin-promise @cspell/eslint-plugin eslint-plugin-import-x eslint-import-resolver-typescript @dword-design/eslint-plugin-import-alias eslint-plugin-boundaries eslint-plugin-eslint-plugin @eslint-community/eslint-plugin-eslint-comments @eslint/json eslint-plugin-regexp @eslint/markdown @eslint/css tailwind-csstree yaml-eslint-parser eslint-plugin-yml eslint-plugin-n
 ```
 
 ### [Eslint JS](https://eslint.org/)
 ```
-npm install --save-dev @eslint/js
+npm install --save-dev eslint@^10 @eslint/js
 ```
 
 ### [Eslint TypeScript](https://typescript-eslint.io/)
 ```
-npm install --save-dev typescript-eslint typescript
+npm install --save-dev typescript-eslint typescript@~6.0
 ```
 
 ### [Svelte](https://github.com/sveltejs/eslint-plugin-svelte)
@@ -31,19 +41,26 @@ npm install --save-dev svelte-eslint-parser eslint-plugin-svelte prettier-plugin
 ```
 npm install --save-dev @html-eslint/parser @html-eslint/eslint-plugin
 ```
-### [JSON](https://eslint.org/blog/2024/10/eslint-json-markdown-support)
+
+### [CSS](https://github.com/eslint/css)
+Official ESLint CSS language. `tailwind-csstree` teaches the parser Tailwind CSS v4 syntax (`@theme`, `@apply`, ...).
 ```
-npm install --save-dev @eslint/json
+npm install --save-dev @eslint/css tailwind-csstree
 ```
 
-### [Tailwind CSS](https://www.npmjs.com/package/eslint-plugin-tailwindcss)
+### Tailwind CSS
+Two plugins, pick one:
+- **[eslint-plugin-tailwindcss](https://github.com/francoismassart/eslint-plugin-tailwindcss)**: The classic one, v4 supports Tailwind CSS 4.
+- **[eslint-plugin-better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss)**: Reads the CSS-based Tailwind 4 config, also lints classes in plain TS strings and CSS `@apply`.
 ```
 npm install --save-dev eslint-plugin-tailwindcss
+npm install --save-dev eslint-plugin-better-tailwindcss
 ```
 
-### [PandaCSS](https://github.com/chakra-ui/eslint-plugin-panda)
+### [PandaCSS](https://github.com/chakra-ui/panda/tree/main/packages/eslint-plugin)
+Version 2 is a rewrite: rules read your `panda.config.ts`, and the config is created with `await panda.configs.recommended({ configPath })`.
 ```
-npm install --save-dev  @pandacss/eslint-plugin
+npm install --save-dev @pandacss/eslint-plugin
 ```
 
 ### [Drizzle ORM](https://orm.drizzle.team/docs/eslint-plugin)
@@ -70,23 +87,25 @@ npm install --save-dev eslint-plugin-perfectionist eslint-plugin-unicorn @stylis
 
 ### Security & Quality
 For improving code security and quality. Includes:
-- **[ESLint Security](https://github.com/nodesecurity/eslint-plugin-security)**: Identifies potential security vulnerabilities in your code.
+- **[ESLint Security](https://github.com/eslint-community/eslint-plugin-security)**: Identifies potential security vulnerabilities in your code.
 - **[SonarJS](https://www.npmjs.com/package/eslint-plugin-sonarjs)**: Detects bugs and code smells.
 - **[TSDoc](https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/)**: Enforces consistent and valid TypeScript documentation comments.
-- **[ESLint Promise](https://github.com/xjamundx/eslint-plugin-promise)**: Ensures best practices for working with JavaScript Promises.
+- **[ESLint Promise](https://github.com/eslint-community/eslint-plugin-promise)**: Ensures best practices for working with JavaScript Promises.
 - **[CSpell](https://github.com/streetsidesoftware/cspell/tree/main/packages/cspell-eslint-plugin)**: Spell Checker for code comments, strings, and identifiers.
 
 ```
 npm install --save-dev eslint-plugin-security eslint-plugin-sonarjs eslint-plugin-tsdoc eslint-plugin-promise @cspell/eslint-plugin
 ```
 
-### Import Management
+### Import Management & Architecture
 For managing and organizing imports effectively. Includes:
-- **[ESLint Plugin Import](https://github.com/import-js/eslint-plugin-import)**: Helps validate proper imports and exports, enforces consistent style, and prevents import errors.
-- **[ESLint Plugin Import Alias](https://www.npmjs.com/package/eslint-plugin-import-alias)**: Simplifies working with path aliases in your project.
+- **[ESLint Plugin Import X](https://github.com/un-ts/eslint-plugin-import-x)**: Validates imports and exports, enforces consistent style, prevents import errors and cycles. Replaces `eslint-plugin-import`, which does not support ESLint 10.
+- **[ESLint Import Resolver TypeScript](https://github.com/import-js/eslint-import-resolver-typescript)**: Lets import-x resolve TypeScript paths.
+- **[@dword-design/eslint-plugin-import-alias](https://github.com/dword-design/eslint-plugin-import-alias)**: Prefers path aliases over `../` imports, reads `tsconfig.json` `paths`. Replaces `eslint-plugin-import-alias`, unmaintained since 2022.
+- **[ESLint Plugin Boundaries](https://www.jsboundaries.dev/)**: Enforces architecture layers (who may import from whom).
 
 ```
-npm install --save-dev eslint-plugin-import eslint-plugin-import-alias
+npm install --save-dev eslint-plugin-import-x eslint-import-resolver-typescript @dword-design/eslint-plugin-import-alias eslint-plugin-boundaries
 ```
 
 ### [Meta Plugins](https://www.npmjs.com/package/eslint-plugin-eslint-plugin)
@@ -94,12 +113,18 @@ npm install --save-dev eslint-plugin-import eslint-plugin-import-alias
 npm install --save-dev eslint-plugin-eslint-plugin
 ```
 
-### [Markdown](https://eslint.org/blog/2024/10/eslint-json-markdown-support/)
+### [ESLint Comments](https://github.com/eslint-community/eslint-plugin-eslint-comments)
+Guards `eslint-disable` comments (unused, missing description, too broad).
+```
+npm install --save-dev @eslint-community/eslint-plugin-eslint-comments
+```
+
+### [Markdown](https://github.com/eslint/markdown)
 ```
 npm install --save-dev @eslint/markdown
 ```
 
-### [JSON](https://eslint.org/blog/2024/10/eslint-json-markdown-support/)
+### [JSON](https://github.com/eslint/json)
 ```
 npm install --save-dev @eslint/json
 ```
@@ -114,9 +139,10 @@ npm install --save-dev yaml-eslint-parser eslint-plugin-yml
 npm install --save-dev eslint-plugin-regexp
 ```
 
-### [Node](https://www.npmjs.com/package/eslint-plugin-node)
+### [Node](https://github.com/eslint-community/eslint-plugin-n)
+`eslint-plugin-n` replaces the deprecated `eslint-plugin-node`.
 ```
-npm install --save-dev eslint-plugin-node
+npm install --save-dev eslint-plugin-n
 ```
 
 ## 👩‍💻 Author

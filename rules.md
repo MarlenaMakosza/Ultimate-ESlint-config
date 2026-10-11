@@ -84,7 +84,7 @@
 	'regex/unicode-property': 'error',
 	'regex/use-ignore-case': 'error',
 ```
-## [eslint-plugin-node](https://www.npmjs.com/package/eslint-plugin-node)
+## [eslint-plugin-n](https://github.com/eslint-community/eslint-plugin-n) (replaces deprecated eslint-plugin-node)
 ```JavaScript
 	'node/callback-return': 'error',
 	'node/exports-style': ['error', 'exports'],
@@ -123,10 +123,18 @@
 	'node/no-restricted-import': 'off',
 	'node/no-restricted-require': 'off',
 	'node/no-missing-import': 'off',
-	'node/no-hide-core-modules': 'off', // deprecated
 	'node/no-process-env': 'off',
 	'node/no-process-exit': 'off',
 	'node/file-extension-in-import': 'off',
+
+	// New / previously unlisted rules
+	'node/no-top-level-await': 'error',
+	'node/prefer-global/crypto': 'error',
+	'node/prefer-global/timers': 'error',
+	'node/prefer-import/assert-strict': 'error',
+	'node/prefer-process-get-builtin-module': 'error',
+
+	// Deprecated or removed upstream, no longer listed: 'node/no-hide-core-modules'
 ```
 ## [eslint-plugin-drizzle](https://orm.drizzle.team/docs/eslint-plugin)
 ```JavaScript
@@ -252,6 +260,19 @@
 	'perfectionist/sort-interfaces': 'off',
 	'perfectionist/sort-objects': 'off',
 	'perfectionist/sort-classes': 'off',
+
+	// New / previously unlisted rules
+	// Opt-in per array: sorts only arrays matched by useConfigurationIf (here: arrays whose elements are all string literals)
+	'perfectionist/sort-arrays': [
+		'error',
+		{
+			type: 'natural',
+			order: 'asc',
+			useConfigurationIf: { matchesAstSelector: 'ArrayExpression:not(:has(> :not(Literal)))' },
+		},
+	],
+	'perfectionist/sort-export-attributes': 'error',
+	'perfectionist/sort-import-attributes': 'error',
 ```
 ## [eslint-plugin-unicorn](https://github.com/sindresorhus/eslint-plugin-unicorn)
 ```JavaScript
@@ -267,16 +288,15 @@
 		},
 	],
 
-	'unicorn/no-array-for-each': 'error',
-	'unicorn/prevent-abbreviations': [
+	'unicorn/no-for-each': 'error', // was 'unicorn/no-array-for-each' (removed)
+	'unicorn/name-replacements': [
 		'error',
 		{ allowList: { req: true, res: true, db: true, rel: true, char: true, env: true } },
-	],
+	], // was 'unicorn/prevent-abbreviations' (deprecated)
 	'unicorn/no-empty-file': 'off', // TODO TEMP
 	'unicorn/error-message': 'error',
 	// Disabled: `null` is standard in databases, APIs, and explicit absence of value is clearer than `undefined`.
 	'unicorn/no-null': 'off',
-	'unicorn/better-regex': 'error',
 	'unicorn/catch-error-name': 'error',
 	'unicorn/consistent-assert': 'error',
 	'unicorn/consistent-date-clone': 'error',
@@ -295,19 +315,19 @@
 	'unicorn/no-anonymous-default-export': 'error',
 	'unicorn/no-array-callback-reference': 'error',
 	'unicorn/no-array-method-this-argument': 'error',
-	'unicorn/no-array-push-push': 'error',
+	'unicorn/prefer-single-call': 'error', // was 'unicorn/no-array-push-push' (deprecated)
 	'unicorn/no-array-reduce': 'error',
 	'unicorn/no-await-expression-member': 'error',
 	'unicorn/no-await-in-promise-methods': 'error',
 	'unicorn/no-console-spaces': 'error',
 	'unicorn/no-document-cookie': 'error',
 	'unicorn/no-for-loop': 'error',
-	'unicorn/no-hex-escape': 'error',
+	'unicorn/prefer-literal-ascii': 'error', // was 'unicorn/no-hex-escape' (deprecated)
 	'unicorn/no-instanceof-builtins': 'error',
 	'unicorn/no-invalid-fetch-options': 'error',
 	'unicorn/no-invalid-remove-event-listener': 'error',
 	'unicorn/no-keyword-prefix': 'error',
-	'unicorn/no-length-as-slice-end': 'error',
+	'unicorn/no-unnecessary-slice-end': 'error', // was 'unicorn/no-length-as-slice-end' (deprecated)
 	'unicorn/no-lonely-if': 'error',
 	'unicorn/no-magic-array-flat-depth': 'error',
 	'unicorn/no-named-default': 'error',
@@ -347,14 +367,14 @@
 	'unicorn/prefer-date-now': 'error',
 	'unicorn/prefer-default-parameters': 'error',
 	'unicorn/prefer-dom-node-append': 'error',
-	'unicorn/prefer-dom-node-dataset': 'error',
+	'unicorn/dom-node-dataset': 'error', // was 'unicorn/prefer-dom-node-dataset' (deprecated)
 	'unicorn/prefer-dom-node-remove': 'error',
 	'unicorn/prefer-dom-node-text-content': 'error',
 	'unicorn/prefer-event-target': 'error',
 	'unicorn/prefer-export-from': 'error',
 	'unicorn/prefer-global-this': 'error',
 	'unicorn/prefer-includes': 'error',
-	'unicorn/prefer-json-parse-buffer': 'error',
+	'unicorn/consistent-json-file-read': 'error', // was 'unicorn/prefer-json-parse-buffer' (deprecated)
 	'unicorn/prefer-keyboard-event-key': 'error',
 	'unicorn/prefer-logical-operator-over-ternary': 'error',
 	'unicorn/prefer-math-min-max': 'error',
@@ -393,6 +413,262 @@
 	'unicorn/switch-case-braces': 'error',
 	'unicorn/text-encoding-identifier-case': 'error',
 	'unicorn/throw-new-error': 'error',
+
+	// New / previously unlisted rules
+	'unicorn/better-dom-traversing': 'error',
+	'unicorn/class-reference-in-static-methods': 'error',
+	'unicorn/comma-spacing': 'error', // only for json files, not JS
+	'unicorn/comment-content': 'error',
+	'unicorn/consistent-arrow-return-style': 'error',
+	'unicorn/consistent-boolean-name': 'error',
+	'unicorn/consistent-class-member-order': 'error',
+	'unicorn/consistent-compound-words': 'error',
+	'unicorn/consistent-conditional-object-spread': 'error',
+	'unicorn/consistent-export-decorator-position': 'error',
+	'unicorn/consistent-function-style': 'error',
+	'unicorn/consistent-optional-chaining': 'error',
+	'unicorn/consistent-template-literal-escape': 'error',
+	'unicorn/consistent-tuple-labels': 'error',
+	'unicorn/default-export-style': 'error',
+	'unicorn/empty-brace-spaces': 'error',
+	'unicorn/explicit-timer-delay': 'error',
+	'unicorn/id-match': 'error',
+	'unicorn/indent': 'error', // only for css / json files, not JS
+	'unicorn/isolated-functions': 'error',
+	'unicorn/iteration-fallback-style': 'error',
+	'unicorn/key-name-casing': 'error', // only for json / toml / yml files, not JS
+	'unicorn/logical-assignment-operators': 'error',
+	'unicorn/max-nested-calls': 'error',
+	'unicorn/no-accidental-bitwise-operator': 'error',
+	'unicorn/no-array-concat-in-loop': 'error',
+	'unicorn/no-array-fill-with-reference-type': 'error',
+	'unicorn/no-array-from-fill': 'error',
+	'unicorn/no-array-front-mutation': 'error',
+	'unicorn/no-array-reverse': 'error',
+	'unicorn/no-array-sort': 'error',
+	'unicorn/no-array-sort-for-min-max': 'error',
+	'unicorn/no-array-splice': 'error',
+	'unicorn/no-asterisk-prefix-in-documentation-comments': 'error',
+	'unicorn/no-async-iterator-callback': 'error',
+	'unicorn/no-async-promise-finally': 'error',
+	'unicorn/no-barrel-files': 'error',
+	'unicorn/no-blob-to-file': 'error',
+	'unicorn/no-boolean-sort-comparator': 'error',
+	'unicorn/no-break-in-nested-loop': 'error',
+	'unicorn/no-canvas-to-image': 'error',
+	'unicorn/no-chained-comparison': 'error',
+	'unicorn/no-collection-bracket-access': 'error',
+	'unicorn/no-computed-property-existence-check': 'error',
+	'unicorn/no-conflicting-constraints': 'error',
+	'unicorn/no-confusing-array-splice': 'error',
+	'unicorn/no-confusing-array-with': 'error',
+	'unicorn/no-constant-zero-expression': 'error',
+	'unicorn/no-declarations-before-early-exit': 'error',
+	'unicorn/no-double-comparison': 'error',
+	'unicorn/no-duplicate-if-branches': 'error',
+	'unicorn/no-duplicate-logical-operands': 'error',
+	'unicorn/no-duplicate-loops': 'error',
+	'unicorn/no-duplicate-set-values': 'error',
+	'unicorn/no-empty-link-text': 'error', // only for markdown files, not JS
+	'unicorn/no-error-property-assignment': 'error',
+	'unicorn/no-exports-in-scripts': 'error',
+	'unicorn/no-global-object-property-assignment': 'error',
+	'unicorn/no-immediate-mutation': 'error',
+	'unicorn/no-impossible-length-comparison': 'error',
+	'unicorn/no-incomplete-accessor-override': 'error',
+	'unicorn/no-incorrect-query-selector': 'error',
+	'unicorn/no-incorrect-template-string-interpolation': 'error',
+	'unicorn/no-ineffective-csp-directives': 'error',
+	'unicorn/no-invalid-argument-count': 'error',
+	'unicorn/no-invalid-boolean-attribute-value': 'error',
+	'unicorn/no-invalid-character-comparison': 'error',
+	'unicorn/no-invalid-dom-token': 'error',
+	'unicorn/no-invalid-file-input-accept': 'error',
+	'unicorn/no-invalid-integrity': 'error',
+	'unicorn/no-invalid-intl-options': 'error',
+	'unicorn/no-invalid-property-descriptor': 'error',
+	'unicorn/no-invalid-response-options': 'error',
+	'unicorn/no-invalid-style-set-property': 'error',
+	'unicorn/no-invalid-temporal-arithmetic': 'error',
+	'unicorn/no-invalid-url-protocol-comparison': 'error',
+	'unicorn/no-invalid-well-known-symbol-methods': 'error',
+	'unicorn/no-javascript-url': 'error', // only for markdown files, not JS
+	'unicorn/no-late-current-target-access': 'error',
+	'unicorn/no-late-event-control': 'error',
+	'unicorn/no-leading-empty-lines': 'error',
+	'unicorn/no-loop-iterable-mutation': 'error',
+	'unicorn/no-loss-of-precision': 'error', // only for css / json / toml files, not JS
+	'unicorn/no-manually-wrapped-comments': 'error',
+	'unicorn/no-mismatched-map-key': 'error',
+	'unicorn/no-misrefactored-assignment': 'error',
+	'unicorn/no-missing-local-resource': 'error',
+	'unicorn/no-multiple-promise-resolver-calls': 'error',
+	'unicorn/no-negated-array-predicate': 'error',
+	'unicorn/no-negated-comparison': 'error',
+	'unicorn/no-nested-ternary': 'error',
+	'unicorn/no-non-function-verb-prefix': 'error',
+	'unicorn/no-nonstandard-builtin-properties': 'error',
+	'unicorn/no-object-methods-with-collections': 'error',
+	'unicorn/no-optional-chaining-on-undeclared-variable': 'error',
+	'unicorn/no-prevent-default-in-passive-listener': 'error',
+	'unicorn/no-redundant-comparison': 'error',
+	'unicorn/no-return-array-push': 'error',
+	'unicorn/no-selector-as-dom-name': 'error',
+	'unicorn/no-shorthand-property-overrides': 'error',
+	'unicorn/no-subtraction-comparison': 'error',
+	'unicorn/no-this-outside-of-class': 'error',
+	'unicorn/no-top-level-assignment-in-function': 'error',
+	'unicorn/no-top-level-side-effects': 'error',
+	'unicorn/no-transition-all': 'error',
+	'unicorn/no-uncalled-method': 'error',
+	'unicorn/no-undeclared-class-members': 'error',
+	'unicorn/no-unnecessary-array-flat-depth': 'error',
+	'unicorn/no-unnecessary-array-flat-map': 'error',
+	'unicorn/no-unnecessary-array-splice-count': 'error',
+	'unicorn/no-unnecessary-boolean-comparison': 'error',
+	'unicorn/no-unnecessary-fetch-options': 'error',
+	'unicorn/no-unnecessary-global-this': 'error',
+	'unicorn/no-unnecessary-nested-ternary': 'error',
+	'unicorn/no-unnecessary-parameters': 'error',
+	'unicorn/no-unnecessary-splice': 'error',
+	'unicorn/no-unnecessary-string-trim': 'error',
+	'unicorn/no-unreadable-for-of-expression': 'error',
+	'unicorn/no-unreadable-new-expression': 'error',
+	'unicorn/no-unreadable-object-destructuring': 'error',
+	'unicorn/no-unsafe-buffer-conversion': 'error',
+	'unicorn/no-unsafe-dom-html': 'error',
+	'unicorn/no-unsafe-json-serialization': 'error',
+	'unicorn/no-unsafe-promise-all-settled-values': 'error',
+	'unicorn/no-unsafe-property-key': 'error',
+	'unicorn/no-unsafe-sqlite-interpolation': 'error',
+	'unicorn/no-unsafe-string-replacement': 'error',
+	'unicorn/no-unused-builtin-method-return': 'error',
+	'unicorn/no-unused-iterator-helper': 'error',
+	'unicorn/no-url-in-search-params': 'error',
+	'unicorn/no-useless-boolean-cast': 'error',
+	'unicorn/no-useless-coercion': 'error',
+	'unicorn/no-useless-collection-argument': 'error',
+	'unicorn/no-useless-compound-assignment': 'error',
+	'unicorn/no-useless-concat': 'error',
+	'unicorn/no-useless-continue': 'error',
+	'unicorn/no-useless-delete-check': 'error',
+	'unicorn/no-useless-else': 'error',
+	'unicorn/no-useless-error-capture-stack-trace': 'error',
+	'unicorn/no-useless-iterator-to-array': 'error',
+	'unicorn/no-useless-logical-operand': 'error',
+	'unicorn/no-useless-override': 'error',
+	'unicorn/no-useless-re-export': 'error',
+	'unicorn/no-useless-recursion': 'error',
+	'unicorn/no-useless-set-construction': 'error',
+	'unicorn/no-useless-template-literals': 'error',
+	'unicorn/no-using-resource-escape': 'error',
+	'unicorn/no-xor-as-exponentiation': 'error',
+	'unicorn/number-literal-case': 'error',
+	'unicorn/operator-assignment': 'error',
+	'unicorn/prefer-abort-signal-any': 'error',
+	'unicorn/prefer-abort-signal-timeout': 'error',
+	'unicorn/prefer-add-event-listener-options': 'error',
+	'unicorn/prefer-aggregate-error': 'error',
+	'unicorn/prefer-array-from-async': 'error',
+	'unicorn/prefer-array-from-map': 'error',
+	'unicorn/prefer-array-from-range': 'error',
+	'unicorn/prefer-array-iterable-methods': 'error',
+	'unicorn/prefer-array-last-methods': 'error',
+	'unicorn/prefer-array-slice': 'error',
+	'unicorn/prefer-await': 'error',
+	'unicorn/prefer-bigint-literals': 'error',
+	'unicorn/prefer-block-statement-over-iife': 'error',
+	'unicorn/prefer-boolean-return': 'error',
+	'unicorn/prefer-class-fields': 'error',
+	'unicorn/prefer-classlist-toggle': 'error',
+	'unicorn/prefer-combined-guards': 'error',
+	'unicorn/prefer-continue': 'error',
+	'unicorn/prefer-direct-iteration': 'error',
+	'unicorn/prefer-dispose': 'error',
+	'unicorn/prefer-dom-node-html-methods': 'error',
+	'unicorn/prefer-dom-node-replace-children': 'error',
+	'unicorn/prefer-early-return': 'error',
+	'unicorn/prefer-else-if': 'error',
+	'unicorn/prefer-error-is-error': 'error',
+	'unicorn/prefer-escaped-irregular-whitespace': 'error',
+	'unicorn/prefer-flat-math-min-max': 'error',
+	'unicorn/prefer-get-or-insert-computed': 'error',
+	'unicorn/prefer-global-number-constants': 'error',
+	'unicorn/prefer-group-by': 'error',
+	'unicorn/prefer-has-check': 'error',
+	'unicorn/prefer-hoisting-branch-code': 'error',
+	'unicorn/prefer-https': 'error',
+	'unicorn/prefer-identifier-import-export-specifiers': 'error',
+	'unicorn/prefer-import-meta-properties': 'error',
+	'unicorn/prefer-includes-over-repeated-comparisons': 'error',
+	'unicorn/prefer-iterable-in-constructor': 'error',
+	'unicorn/prefer-iterator-concat': 'error',
+	'unicorn/prefer-iterator-helpers': 'error',
+	'unicorn/prefer-iterator-to-array': 'error',
+	'unicorn/prefer-iterator-to-array-at-end': 'error',
+	'unicorn/prefer-iterator-zip': 'error',
+	'unicorn/prefer-json-import': 'error',
+	'unicorn/prefer-location-assign': 'error',
+	'unicorn/prefer-map-from-entries': 'error',
+	'unicorn/prefer-math-abs': 'error',
+	'unicorn/prefer-math-constants': 'error',
+	'unicorn/prefer-minimal-ternary': 'error',
+	'unicorn/prefer-number-coercion': 'error',
+	'unicorn/prefer-number-is-safe-integer': 'error',
+	'unicorn/prefer-object-define-properties': 'error',
+	'unicorn/prefer-object-destructuring-defaults': 'error',
+	'unicorn/prefer-object-iterable-methods': 'error',
+	'unicorn/prefer-observer-apis': 'error',
+	'unicorn/prefer-path2d': 'error',
+	'unicorn/prefer-private-class-fields': 'error',
+	'unicorn/prefer-promise-static-methods': 'error',
+	'unicorn/prefer-promise-try': 'error',
+	'unicorn/prefer-promise-with-resolvers': 'error',
+	'unicorn/prefer-queue-microtask': 'error',
+	'unicorn/prefer-regexp-escape': 'error',
+	'unicorn/prefer-response-static-json': 'error',
+	'unicorn/prefer-scoped-selector': 'error',
+	'unicorn/prefer-set-methods': 'error',
+	'unicorn/prefer-short-arrow-method': 'error',
+	'unicorn/prefer-short-escape-sequences': 'error',
+	'unicorn/prefer-simple-condition-first': 'error',
+	'unicorn/prefer-simple-sort-comparator': 'error',
+	'unicorn/prefer-simplified-conditions': 'error',
+	'unicorn/prefer-single-array-predicate': 'error',
+	'unicorn/prefer-single-object-destructuring': 'error',
+	'unicorn/prefer-single-replace': 'error',
+	'unicorn/prefer-smaller-scope': 'error',
+	'unicorn/prefer-split-limit': 'error',
+	'unicorn/prefer-string-match-all': 'error',
+	'unicorn/prefer-string-pad-start-end': 'error',
+	'unicorn/prefer-string-repeat': 'error',
+	'unicorn/prefer-temporal': 'error',
+	'unicorn/prefer-temporal-conversion': 'error',
+	'unicorn/prefer-then-catch': 'error',
+	'unicorn/prefer-toggle-attribute': 'error',
+	'unicorn/prefer-type-literal-last': 'error',
+	'unicorn/prefer-uint8array-base64': 'error',
+	'unicorn/prefer-uint8array-hex': 'error',
+	'unicorn/prefer-unary-minus': 'error',
+	'unicorn/prefer-unicode-code-point-escapes': 'error',
+	'unicorn/prefer-url-can-parse': 'error',
+	'unicorn/prefer-url-href': 'error',
+	'unicorn/prefer-url-search-parameters': 'error',
+	'unicorn/prefer-while-loop-condition': 'error',
+	'unicorn/require-array-sort-compare': 'error',
+	'unicorn/require-css-escape': 'error',
+	'unicorn/require-frontmatter-fields': 'error', // only for markdown files, not JS
+	'unicorn/require-module-attributes': 'error',
+	'unicorn/require-module-specifiers': 'error',
+	'unicorn/require-passive-events': 'error',
+	'unicorn/require-proxy-trap-boolean-return': 'error',
+	'unicorn/require-text-decoder-streaming': 'error',
+	'unicorn/single-line-block-comment-style': 'error',
+	'unicorn/switch-case-break-position': 'error',
+	'unicorn/template-indent': 'error',
+	'unicorn/try-complexity': 'error',
+
+	// Deprecated or removed upstream, no longer listed: 'unicorn/better-regex'
 ```
 ## [@stylistic/eslint-plugin](https://eslint.style/packages/default)
 ```JavaScript
@@ -422,7 +698,6 @@
 			before: true,
 		},
 	],
-	'@stylistic/multiline-comment-stylistic': 'off',
 	'@stylistic/no-multiple-empty-lines': [
 		'error',
 		{
@@ -441,12 +716,12 @@
 	'@stylistic/object-curly-spacing': ['error', 'always'],
 	'@stylistic/padded-blocks': ['error', 'never', { allowSingleLineBlocks: true }],
 	'@stylistic/quote-props': ['error', 'consistent-as-needed'],
-	'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: true, avoidEscape: true }],
+	'@stylistic/quotes': ['error', 'single', { allowTemplateLiterals: 'always', avoidEscape: true }],
 	'@stylistic/semi': ['error', 'always'],
 	'@stylistic/function-call-spacing': ['error', 'never'],
 	'@stylistic/function-call-argument-newline': ['error', 'consistent'],
 	'@stylistic/jsx-self-closing-comp': 'error',
-	'@stylistic/jsx-props-no-multi-spaces': 'error',
+	'@stylistic/no-multi-spaces': 'error', // was '@stylistic/jsx-props-no-multi-spaces' (deprecated)
 	'@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 3 }],
 	'@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
 	'@stylistic/switch-colon-spacing': ['error', { after: true, before: false }],
@@ -460,10 +735,6 @@
 	// '@stylistic/linebreak-style': ['error', 'unix'], // Can be problematic
 	'@stylistic/linebreak-style': 'off',
 	'@stylistic/max-len': ['error', { code: 130, ignoreUrls: true }],
-	// '@stylistic/max-len': 'off',
-
-	// Disabled because Prettier/impractical
-	'@stylistic/func-call-spacing': 'off', // same as `@stylistic/function-call-spacing`
 	'@stylistic/no-extra-semi': 'off',
 	'@stylistic/multiline-ternary': 'off',
 	'@stylistic/one-var-declaration-per-line': 'off',
@@ -472,7 +743,6 @@
 	'@stylistic/implicit-arrow-linebreak': 'off',
 	'@stylistic/generator-star-spacing': 'off',
 	'@stylistic/jsx-newline': 'off',
-	'@stylistic/jsx-sort-props': 'off',
 	'@stylistic/jsx-pascal-case': 'off',
 	'@stylistic/line-comment-position': 'off',
 	'@stylistic/multiline-comment-style': 'off',
@@ -480,6 +750,55 @@
 	'@stylistic/no-confusing-arrow': 'off',
 	'@stylistic/wrap-regex': 'off',
 	'@stylistic/nonblock-statement-body-position': 'off',
+
+	// New / previously unlisted rules
+	'@stylistic/arrow-parens': 'error',
+	'@stylistic/arrow-spacing': 'error',
+	'@stylistic/block-spacing': 'error',
+	'@stylistic/comma-dangle': 'error',
+	'@stylistic/comma-style': 'error',
+	'@stylistic/computed-property-spacing': 'error',
+	'@stylistic/dot-location': 'error',
+	'@stylistic/eol-last': 'error',
+	'@stylistic/exp-jsx-props-style': 'error',
+	'@stylistic/exp-list-style': 'error',
+	'@stylistic/indent-binary-ops': 'error',
+	'@stylistic/jsx-closing-bracket-location': 'error',
+	'@stylistic/jsx-closing-tag-location': 'error',
+	'@stylistic/jsx-curly-newline': 'error',
+	'@stylistic/jsx-curly-spacing': 'error',
+	'@stylistic/jsx-equals-spacing': 'error',
+	'@stylistic/jsx-first-prop-new-line': 'error',
+	'@stylistic/jsx-indent-props': 'error',
+	'@stylistic/jsx-max-props-per-line': 'error',
+	'@stylistic/jsx-one-expression-per-line': 'error',
+	'@stylistic/jsx-quotes': 'error',
+	'@stylistic/jsx-tag-spacing': 'error',
+	'@stylistic/jsx-wrap-multilines': 'error',
+	'@stylistic/key-spacing': 'error',
+	'@stylistic/new-parens': 'error',
+	'@stylistic/no-extra-parens': 'error',
+	'@stylistic/no-floating-decimal': 'error',
+	'@stylistic/no-mixed-operators': 'error',
+	'@stylistic/no-mixed-spaces-and-tabs': 'error',
+	'@stylistic/no-whitespace-before-property': 'error',
+	'@stylistic/operator-linebreak': 'error',
+	'@stylistic/rest-spread-spacing': 'error',
+	'@stylistic/semi-spacing': 'error',
+	'@stylistic/space-before-blocks': 'error',
+	'@stylistic/space-before-function-paren': 'error',
+	'@stylistic/space-in-parens': 'error',
+	'@stylistic/space-infix-ops': 'error',
+	'@stylistic/space-unary-ops': 'error',
+	'@stylistic/template-curly-spacing': 'error',
+	'@stylistic/template-tag-spacing': 'error',
+	'@stylistic/type-annotation-spacing': 'error',
+	'@stylistic/type-generic-spacing': 'error',
+	'@stylistic/type-named-tuple-spacing': 'error',
+	'@stylistic/wrap-iife': 'error',
+	'@stylistic/yield-star-spacing': 'error',
+
+	// Deprecated or removed upstream, no longer listed: '@stylistic/multiline-comment-stylistic', '@stylistic/func-call-spacing', '@stylistic/jsx-sort-props' (use 'sort-jsx-props')
 ```
 ## [eslint-plugin-functional](https://github.com/eslint-functional/eslint-plugin-functional)
 ```JavaScript
@@ -505,60 +824,65 @@
 	'functional/prefer-tacit': 'error',
 	'functional/readonly-type': 'error',
 ```
-## [eslint-plugin-import](https://github.com/import-js/eslint-plugin-import)
+## [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x) (replaces eslint-plugin-import, which does not support ESLint 10)
 ```JavaScript
-        'import/no-relative-packages': 'error',
-	'import/consistent-type-specifier-style': 'error',
-	'import/no-self-import': 'error',
-	'import/no-cycle': 'error',
-	'import/no-named-default': 'error',
-	'import/no-unused-modules': 'error',
-	'import/no-commonjs': 'error',
-	'import/no-amd': 'error',
-	'import/first': 'error',
-	'import/max-dependencies': 'error',
-	'import/no-nodejs-modules': 'error',
-	'import/newline-after-import': 'error',
-	'import/no-dynamic-require': 'error',
-	'import/dynamic-import-chunkname': 'error',
-	'import/no-import-module-exports': 'error',
-	'import/no-empty-named-blocks': 'error',
-	'import/exports-last': 'error',
-	'import/no-deprecated': 'error',
+        'import-x/no-relative-packages': 'error',
+	'import-x/consistent-type-specifier-style': 'error',
+	'import-x/no-self-import': 'error',
+	'import-x/no-cycle': 'error',
+	'import-x/no-named-default': 'error',
+	// No-op on ESLint 10 (FileEnumerator API removed); use knip for unused exports
+	'import-x/no-unused-modules': ['error', { unusedExports: true, missingExports: true, suppressMissingFileEnumeratorAPIWarning: true }],
+	'import-x/no-commonjs': 'error',
+	'import-x/no-amd': 'error',
+	'import-x/first': 'error',
+	'import-x/max-dependencies': 'error',
+	'import-x/no-nodejs-modules': 'error',
+	'import-x/newline-after-import': 'error',
+	'import-x/no-dynamic-require': 'error',
+	'import-x/dynamic-import-chunkname': 'error',
+	'import-x/no-import-module-exports': 'error',
+	'import-x/no-empty-named-blocks': 'error',
+	'import-x/exports-last': 'error',
+	'import-x/no-deprecated': 'error',
 
 	// Recommended
-	'import/named': 'error',
-	'import/default': 'error',
-	'import/namespace': 'error',
-	'import/export': 'error',
-	'import/no-named-as-default': 'error',
-	'import/no-named-as-default-member': 'error',
-	'import/no-duplicates': 'error',
+	'import-x/named': 'error',
+	'import-x/default': 'error',
+	'import-x/namespace': 'error',
+	'import-x/export': 'error',
+	'import-x/no-named-as-default': 'error',
+	'import-x/no-named-as-default-member': 'error',
+	'import-x/no-duplicates': 'error',
 	//"If you're using a module bundler other than Node or Webpack, you may end up with a lot of false positive reports of missing dependencies."
 	//https://github.com/import-js/eslint-plugin-import/blob/v2.31.0/docs/rules/no-unresolved.md
-	'import/no-unresolved': 'off',
-	'import/no-anonymous-default-export': 'error',
-	'import/no-absolute-path': 'error',
-	'import/no-useless-path-segments': ['error', { noUselessIndex: true }],
+	'import-x/no-unresolved': 'off',
+	'import-x/no-anonymous-default-export': 'error',
+	'import-x/no-absolute-path': 'error',
+	'import-x/no-useless-path-segments': ['error', { noUselessIndex: true }],
 
 	// Useless
-	'import/no-namespace': 'off',
-	'import/group-exports': 'off',
-	'import/no-relative-parent-imports': 'off',
-	'import/no-webpack-loader-syntax': 'off',
-	'import/prefer-default-export': 'off',
-	'import/no-default-export': 'off',
-	'import/unambiguous': 'off',
-	'import/no-unassigned-import': 'off',
-	'import/no-named-export': 'off',
-	'import/no-internal-modules': 'off',
-	'import/extensions': 'off',
-	'import/no-restricted-paths': 'off',
-	'import/order': 'off',
-	'import/no-mutable-exports': 'off',
-	'import/no-extraneous-dependencies': 'off',
+	'import-x/no-namespace': 'off',
+	'import-x/group-exports': 'off',
+	'import-x/no-relative-parent-imports': 'off',
+	'import-x/no-webpack-loader-syntax': 'off',
+	'import-x/prefer-default-export': 'off',
+	'import-x/no-default-export': 'off',
+	'import-x/unambiguous': 'off',
+	'import-x/no-unassigned-import': 'off',
+	'import-x/no-named-export': 'off',
+	'import-x/no-internal-modules': 'off',
+	'import-x/extensions': 'off',
+	'import-x/no-restricted-paths': 'off',
+	'import-x/order': 'off',
+	'import-x/no-mutable-exports': 'off',
+	'import-x/no-extraneous-dependencies': 'off',
+
+	// New / previously unlisted rules
+	'import-x/no-rename-default': 'error',
+	'import-x/prefer-namespace-import': 'error',
 ```
-## [eslint-plugin-security](https://github.com/nodesecurity/eslint-plugin-security)
+## [eslint-plugin-security](https://github.com/eslint-community/eslint-plugin-security)
 ```JavaScript
 	'security/detect-unsafe-regex': 'error',
 	'security/detect-non-literal-regexp': 'error',
@@ -574,6 +898,9 @@
 	'security/detect-object-injection': 'error',
 	'security/detect-new-buffer': 'error',
 	'security/detect-bidi-characters': 'error',
+
+	// New / previously unlisted rules
+	'security/detect-invisible-characters': 'error',
 ```
 ## [eslint-plugin-sonarjs](https://www.npmjs.com/package/eslint-plugin-sonarjs)
 ```JavaScript
@@ -603,7 +930,6 @@
 	'sonarjs/bitwise-operators': 'error',
 	'sonarjs/no-primitive-wrappers': 'error',
 	'sonarjs/no-skipped-tests': 'error',
-	'sonarjs/no-one-iteration-loop': 'error',
 	'sonarjs/no-identical-expressions': 'error',
 	'sonarjs/constructor-for-side-effects': 'error',
 	'sonarjs/no-dead-store': 'error',
@@ -662,7 +988,6 @@
 	'sonarjs/in-operator-type-error': 'error',
 	'sonarjs/array-callback-without-return': 'error',
 	'sonarjs/function-return-type': 'error',
-	'sonarjs/super-invocation': 'error',
 	'sonarjs/no-all-duplicated-branches': 'error',
 	'sonarjs/no-same-line-conditional': 'error',
 	'sonarjs/no-collection-size-mischeck': 'error',
@@ -670,7 +995,6 @@
 	'sonarjs/no-unused-collection': 'error',
 	'sonarjs/no-os-command-from-path': 'error',
 	'sonarjs/no-misleading-array-reverse': 'error',
-	'sonarjs/no-invalid-await': 'error',
 	'sonarjs/no-element-overwrite': 'error',
 	'sonarjs/no-identical-functions': 'error',
 	'sonarjs/no-empty-collection': 'error',
@@ -688,12 +1012,10 @@
 	'sonarjs/no-undefined-argument': 'error',
 	'sonarjs/no-nested-template-literals': 'error',
 	'sonarjs/prefer-promise-shorthand': 'error',
-	'sonarjs/os-command': 'error',
 	'sonarjs/no-redundant-optional': 'error',
 	'sonarjs/hashing': 'error',
 	'sonarjs/no-try-promise': 'error',
 	'sonarjs/unverified-certificate': 'error',
-	'sonarjs/no-unsafe-unzip': 'error',
 	'sonarjs/cors': 'error',
 	'sonarjs/link-with-target-blank': 'error',
 	'sonarjs/disabled-auto-escaping': 'error',
@@ -706,20 +1028,14 @@
 	'sonarjs/unverified-hostname': 'error',
 	'sonarjs/encryption-secure-mode': 'error',
 	'sonarjs/no-weak-cipher': 'error',
-	'sonarjs/no-intrusive-permissions': 'error',
 	'sonarjs/insecure-jwt-token': 'error',
 	'sonarjs/x-powered-by': 'error',
-	'sonarjs/hidden-files': 'error',
 	'sonarjs/content-length': 'error',
 	'sonarjs/disabled-resource-integrity': 'error',
 	'sonarjs/content-security-policy': 'error',
-	'sonarjs/no-mixed-content': 'error',
-	'sonarjs/frame-ancestors': 'error',
 	'sonarjs/no-mime-sniff': 'error',
 	'sonarjs/no-referrer-policy': 'error',
 	'sonarjs/strict-transport-security': 'error',
-	'sonarjs/confidential-information-logging': 'error',
-	'sonarjs/no-ip-forward': 'error',
 	'sonarjs/empty-string-repetition': 'error',
 	'sonarjs/regex-complexity': 'error',
 	'sonarjs/anchor-precedence': 'error',
@@ -835,12 +1151,58 @@
 	'sonarjs/class-prototype': 'off', // In TypeScript and Svelte prototype is rarely used – if someone uses it, it is done consciously
 	'sonarjs/no-reference-error': 'off', // Possible problem when use 'console' od 'process'
 	'sonarjs/shorthand-property-grouping': 'error',
+
+	// New / previously unlisted rules
+	'sonarjs/assertions-in-test-cases': 'error',
+	'sonarjs/async-test-assertions': 'error',
+	'sonarjs/avoid-mutating-nested-properties-of-shallow-clones': 'error',
+	'sonarjs/composite-assertions': 'error',
+	'sonarjs/dompurify-unsafe-config': 'error',
+	'sonarjs/dynamically-constructed-templates': 'error',
+	'sonarjs/explicit-test-skip': 'error',
+	'sonarjs/hardcoded-secret-signatures': 'error',
+	'sonarjs/hooks-before-test-cases': 'error',
+	'sonarjs/memoize-cache-key': 'error',
+	'sonarjs/no-debounce-throttle-in-render': 'error',
+	'sonarjs/no-debug-commands-in-ui-tests': 'error',
+	'sonarjs/no-default-utility-imports': 'error',
+	'sonarjs/no-duplicate-parameterized-test-case': 'error',
+	'sonarjs/no-duplicate-test-title': 'error',
+	'sonarjs/no-empty-parameterized-test-dataset': 'error',
+	'sonarjs/no-empty-test-title': 'error',
+	'sonarjs/no-fixed-wait-in-tests': 'error',
+	'sonarjs/no-floating-point-equality': 'error',
+	'sonarjs/no-forced-browser-interaction': 'error',
+	'sonarjs/no-incompatible-assertion-types': 'error',
+	'sonarjs/no-interpolation-in-inline-snapshots': 'error',
+	'sonarjs/no-mixed-completion-style': 'error',
+	'sonarjs/no-mutate-reactive-state-in-updated-hook': 'error',
+	'sonarjs/no-networkidle-wait': 'error',
+	'sonarjs/no-session-cookies-on-static-assets': 'error',
+	'sonarjs/no-trivial-assertions': 'error',
+	'sonarjs/no-vue-class-component': 'error',
+	'sonarjs/no-vue-mixins': 'error',
+	'sonarjs/parameterized-tests': 'error',
+	'sonarjs/prefer-cypress-should': 'error',
+	'sonarjs/prefer-native-axios-alternative': 'error',
+	'sonarjs/prefer-native-jquery-alternative': 'error',
+	'sonarjs/prefer-native-lodash-alternative': 'error',
+	'sonarjs/prefer-specific-assertions': 'error',
+	'sonarjs/review-blockchain-mnemonic': 'error',
+	'sonarjs/super-linear-regex': 'error',
+	'sonarjs/synchronous-exception-assertions': 'error',
+	'sonarjs/synchronous-suite-callback': 'error',
+	'sonarjs/testing-library-prefer-query-by-disappearance': 'error',
+	'sonarjs/testing-library-query-assertion': 'error',
+	'sonarjs/vitest-mock-at-module-scope': 'error',
+
+	// Deprecated or removed upstream, no longer listed: 'sonarjs/no-one-iteration-loop' (use 'no-unreachable-loop'), 'sonarjs/super-invocation' (use 'constructor-super'), 'sonarjs/no-invalid-await' (use '@typescript-eslint/await-thenable'), 'sonarjs/os-command', 'sonarjs/no-unsafe-unzip', 'sonarjs/no-intrusive-permissions', 'sonarjs/hidden-files', 'sonarjs/no-mixed-content', 'sonarjs/frame-ancestors', 'sonarjs/confidential-information-logging', 'sonarjs/no-ip-forward'
 ```
 ## [eslint-plugin-tsdoc](https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/)
 ```JavaScript
         'tsDoc/syntax': 'warn' 
 ```
-## [eslint-plugin-promise](https://github.com/xjamundx/eslint-plugin-promise)
+## [eslint-plugin-promise](https://github.com/eslint-community/eslint-plugin-promise)
 ```JavaScript
         'promise/always-return': 'error',
 	'promise/no-return-wrap': 'error',
@@ -864,21 +1226,21 @@
 ```JavaScript
         'cspell/spellchecker': 'warn',
 ```
-## [eslint-plugin-import-alias](https://www.npmjs.com/package/eslint-plugin-import-alias)
+## [@dword-design/eslint-plugin-import-alias](https://github.com/dword-design/eslint-plugin-import-alias) (replaces eslint-plugin-import-alias, unmaintained since 2022)
 ```JavaScript
-	'alias/import-alias': [
+	// Aliases from tsconfig.json `paths` are read automatically (shouldReadTsConfig: true by default)
+	'@dword-design/import-alias/prefer-alias': [
 		'error',
 		{
-			relativeDepth: 1,
-			rootDir: import.meta.dirname,
-			aliases: [
-				{ alias: '@src', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
-				{ alias: '@routes', matcher: '^src/routes' }, // src/routes/modules/app/test -> @routes/modules/app/test
-				{ alias: '@test', matcher: '^test/unit' }, // test/unit/modules/app -> @test/modules/app
-				{ alias: '@testRoot', matcher: '^(test)/e2e' }, // test/e2e/modules/app -> @testRoot/e2e/modules/app
-			],
+			aliasForSubpaths: false, // keep ./sibling imports relative, alias only ../parent paths
+			alias: {
+				'@src': './src', // src/modules/app/test -> @src/modules/app/test
+				'@routes': './src/routes', // src/routes/modules/app/test -> @routes/modules/app/test
+				'@test': './test/unit', // test/unit/modules/app -> @test/modules/app
+				'@testRoot': './test', // test/e2e/modules/app -> @testRoot/e2e/modules/app
+			},
 		},
-	],
+	], // was 'alias/import-alias' (eslint-plugin-import-alias)
 ```
 ## [eslint-plugin-eslint-plugin](https://www.npmjs.com/package/eslint-plugin-eslint-plugin)
 ```JavaScript
@@ -913,8 +1275,18 @@
 	'esEs/prefer-output-null': 'error',
 	'esEs/test-case-property-ordering': 'error',
 	'esEs/test-case-shorthand-strings': 'error',
+
+	// New / previously unlisted rules
+	'esEs/no-incomplete-meta-schema': 'error',
+	'esEs/no-incorrect-meta-schema': 'error',
+	'esEs/no-matching-violation-suggest-message-ids': 'error',
+	'esEs/no-meta-replaced-by': 'error',
+	'esEs/require-meta-languages': 'error',
+	'esEs/require-test-case-name': 'error',
+	'esEs/require-test-error-positions': 'error',
+	'esEs/unique-test-case-names': 'error',
 ```
-## [@eslint/json](https://eslint.org/blog/2024/10/eslint-json-markdown-support/)
+## [@eslint/json](https://github.com/eslint/json)
 ```JavaScript
 	// Recommended
 	'json/no-duplicate-keys': 'error',
@@ -1165,8 +1537,12 @@
 	'prefer-destructuring': 'off',
 	'prefer-promise-reject-errors': 'off',
 	'require-await': 'off',
+
+	// New / previously unlisted rules
+	'no-unassigned-vars': 'error',
+	'preserve-caught-error': 'error',
 ```
-## [@eslint/markdown](https://eslint.org/blog/2024/10/eslint-json-markdown-support/)
+## [@eslint/markdown](https://github.com/eslint/markdown)
 ```JavaScript
 	'markdown/fenced-code-language': 'error',
 	'markdown/heading-increment': 'error',
@@ -1175,60 +1551,96 @@
 	'markdown/no-html': 'error',
 	'markdown/no-invalid-label-refs': 'error',
 	'markdown/no-missing-label-refs': 'error',
+
+	// New / previously unlisted rules
+	'markdown/fenced-code-meta': 'error',
+	'markdown/no-bare-urls': 'error',
+	'markdown/no-duplicate-definitions': 'error',
+	'markdown/no-empty-definitions': 'error',
+	'markdown/no-empty-images': 'error',
+	'markdown/no-missing-atx-heading-space': 'error',
+	'markdown/no-missing-link-fragments': 'error',
+	'markdown/no-multiple-h1': 'error',
+	'markdown/no-reference-like-urls': 'error',
+	'markdown/no-reversed-media-syntax': 'error',
+	'markdown/no-space-in-emphasis': 'error',
+	'markdown/no-unused-definitions': 'error',
+	'markdown/require-alt-text': 'error',
+	'markdown/table-column-count': 'error',
 ```
 ## [@html-eslint/eslint-plugin](https://html-eslint.org/)
 ```JavaScript
     // Recommended
-	'@html-eslint/require-lang': 'error',
-	'@html-eslint/require-img-alt': 'error',
-	'@html-eslint/require-doctype': 'error',
-	'@html-eslint/require-title': 'error',
-	'@html-eslint/no-duplicate-id': 'error',
-	'@html-eslint/no-multiple-h1': 'error',
-	'@html-eslint/attrs-newline': 'error',
-	'@html-eslint/element-newline': 'error',
-	'@html-eslint/require-li-container': 'error',
-	'@html-eslint/indent': ['error', 'tab'],
-	'@html-eslint/quotes': 'error',
-	'@html-eslint/no-obsolete-tags': 'error',
-	'@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
-	'@html-eslint/no-duplicate-attrs': 'error',
-	'@html-eslint/no-extra-spacing-attrs': 'off',
+	'html/require-lang': 'error',
+	'html/require-img-alt': 'error',
+	'html/require-doctype': 'error',
+	'html/require-title': 'error',
+	'html/no-duplicate-id': 'error',
+	'html/no-multiple-h1': 'error',
+	'html/attrs-newline': 'error',
+	'html/element-newline': 'error',
+	'html/require-li-container': 'error',
+	'html/indent': ['error', 'tab'],
+	'html/quotes': 'error',
+	'html/no-obsolete-tags': 'error',
+	'html/require-closing-tags': ['error', { selfClosing: 'always' }],
+	'html/no-duplicate-attrs': 'error',
+	'html/no-extra-spacing-tags': 'off', // was 'html/no-extra-spacing-attrs' (deprecated)
 	// Other
-	'@html-eslint/require-meta-charset': 'error',
-	'@html-eslint/lowercase': 'error',
-	'@html-eslint/require-input-label': 'error',
-	'@html-eslint/require-explicit-size': 'error',
-	'@html-eslint/no-trailing-spaces': 'error',
-	'@html-eslint/no-extra-spacing-text': 'error',
-	'@html-eslint/require-meta-description': 'error',
-	'@html-eslint/require-frame-title': 'error',
-	'@html-eslint/no-non-scalable-viewport': 'error',
-	'@html-eslint/no-target-blank': 'error',
-	'@html-eslint/require-button-type': 'error',
-	'@html-eslint/no-heading-inside-button': 'error',
-	'@html-eslint/require-form-method': 'error',
-	'@html-eslint/sort-attrs': 'error',
-	'@html-eslint/no-skip-heading-levels': 'error',
-	'@html-eslint/id-naming-convention': 'error',
-	'@html-eslint/require-attrs': 'error',
-	'@html-eslint/no-positive-tabindex': 'error',
-	'@html-eslint/require-meta-viewport': 'error',
-	'@html-eslint/no-abstract-roles': 'error',
-	'@html-eslint/no-aria-hidden-body': 'error',
-	'@html-eslint/no-multiple-empty-lines': 'error',
-	'@html-eslint/no-accesskey-attrs': 'error',
-	'@html-eslint/no-restricted-attrs': 'error',
-	'@html-eslint/no-restricted-attr-values': 'error',
-	'@html-eslint/no-script-style-type': 'error',
-	'@html-eslint/no-invalid-role': 'error',
-	'@html-eslint/no-nested-interactive': 'error',
-	'@html-eslint/prefer-https': 'error',
-	'@html-eslint/max-element-depth': 'error',
+	'html/require-meta-charset': 'error',
+	'html/lowercase': 'error',
+	'html/require-input-label': 'error',
+	'html/require-explicit-size': 'error',
+	'html/no-trailing-spaces': 'error',
+	'html/no-extra-spacing-text': 'error',
+	'html/require-meta-description': 'error',
+	'html/require-frame-title': 'error',
+	'html/no-non-scalable-viewport': 'error',
+	'html/no-target-blank': 'error',
+	'html/require-button-type': 'error',
+	'html/no-heading-inside-button': 'error',
+	'html/require-form-method': 'error',
+	'html/sort-attrs': 'error',
+	'html/no-skip-heading-levels': 'error',
+	'html/id-naming-convention': 'error',
+	'html/require-attrs': 'error',
+	'html/no-positive-tabindex': 'error',
+	'html/require-meta-viewport': 'error',
+	'html/no-abstract-roles': 'error',
+	'html/no-aria-hidden-body': 'error',
+	'html/no-multiple-empty-lines': 'error',
+	'html/no-accesskey-attrs': 'error',
+	'html/no-restricted-attrs': 'error',
+	'html/no-restricted-attr-values': 'error',
+	'html/no-script-style-type': 'error',
+	'html/no-invalid-role': 'error',
+	'html/no-nested-interactive': 'error',
+	'html/prefer-https': 'error',
+	'html/max-element-depth': 'error',
 
 	// Off
-	'@html-eslint/require-open-graph-protocol': 'off',
-	'@html-eslint/no-inline-styles': 'off',
+	'html/require-open-graph-protocol': 'off',
+	'html/no-inline-styles': 'off',
+
+	// New / previously unlisted rules
+	'html/class-spacing': 'error',
+	'html/css-no-empty-blocks': 'error',
+	'html/head-order': 'error',
+	'html/no-aria-hidden-on-focusable': 'error',
+	'html/no-duplicate-class': 'error',
+	'html/no-duplicate-in-head': 'error',
+	'html/no-empty-headings': 'error',
+	'html/no-ineffective-attrs': 'error',
+	'html/no-invalid-attr-value': 'error',
+	'html/no-invalid-entity': 'error',
+	'html/no-obsolete-attrs': 'error',
+	'html/no-redundant-role': 'error',
+	'html/no-restricted-tags': 'error',
+	'html/no-whitespace-only-children': 'error',
+	'html/require-content': 'error',
+	'html/require-details-summary': 'error',
+	'html/svg-require-viewbox': 'error',
+	'html/use-baseline': 'error',
 ```
 ## [@typescript-eslint/eslint-plugin](https://typescript-eslint.io/)
 ```JavaScript
@@ -1271,8 +1683,7 @@
 	'@typescript-eslint/no-useless-constructor': 'error',
 	'@typescript-eslint/no-confusing-non-null-assertion': 'error',
 	'@typescript-eslint/no-deprecated': 'error',
-	'no-loop-func': 'off',
-	'@typescript-eslint/no-loop-func': 'error',
+	'no-loop-func': 'error', // replaces deprecated '@typescript-eslint/no-loop-func'
 	'@typescript-eslint/no-redundant-type-constituents': 'error',
 	'@typescript-eslint/no-duplicate-enum-values': 'error',
 	'@typescript-eslint/no-array-delete': 'error',
@@ -1435,7 +1846,6 @@
 			allowNullableObject: false,
 		},
 	],
-	'no-return-await': 'off',
 	'@typescript-eslint/return-await': ['error', 'in-try-catch'],
 	'@typescript-eslint/restrict-plus-operands': [
 		'error',
@@ -1481,14 +1891,12 @@
 	// Disabled for some reason
 	'no-throw-literal': 'off',
 	'@typescript-eslint/only-throw-error': 'off', // Because detect sveltekit errors as bad
-	'@typescript-eslint/typedef': 'off', // If you use strict: true, you don't need this rule!
 	'init-declarations': 'off',
 	'@typescript-eslint/init-declarations': 'off',
 	'@typescript-eslint/member-ordering': 'off', // perfectionist
 	'@typescript-eslint/naming-convention': 'off',
 	'@typescript-eslint/no-restricted-types': 'off',
-	'no-restricted-imports': 'off',
-	'@typescript-eslint/no-restricted-imports': 'off',
+	'no-restricted-imports': 'off', // replaces deprecated '@typescript-eslint/no-restricted-imports'
 	// "The code problem checked by this ESLint rule is automatically checked by the TypeScript compiler.
 	// Thus, it is not recommended to turn on this rule in new TypeScript projects."
 	// https://typescript-eslint.io/rules/no-redeclare/
@@ -1504,27 +1912,38 @@
 	// https://typescript-eslint.io/rules/no-dupe-class-members/
 	'no-dupe-class-members': 'off',
 	'@typescript-eslint/no-dupe-class-members': 'off',
+
+	// New / previously unlisted rules
+	'@typescript-eslint/no-generated-empty-object-type': 'error',
+	'@typescript-eslint/no-unnecessary-type-conversion': 'error',
+	'@typescript-eslint/no-unsafe-enum-assignment': 'error',
+	'@typescript-eslint/no-unused-private-class-members': 'error',
+	'@typescript-eslint/no-useless-default-assignment': 'error',
+	'@typescript-eslint/strict-void-return': 'error',
+
+	// Deprecated or removed upstream, no longer listed: '@typescript-eslint/no-loop-func' (use 'no-loop-func'), 'no-return-await', '@typescript-eslint/typedef', '@typescript-eslint/no-restricted-imports' (use 'no-restricted-imports')
 ```
-## [@pandacss/eslint-plugin](https://github.com/chakra-ui/eslint-plugin-panda)
+## [@pandacss/eslint-plugin](https://github.com/chakra-ui/panda/tree/main/packages/eslint-plugin) (v2 rewrite: rules read panda.config.ts)
 ```JavaScript
 	'@pandacss/file-not-included': 'error',
-	'@pandacss/no-config-function-in-source': 'error',
 	'@pandacss/no-debug': 'error',
-	'@pandacss/no-dynamic-styling': 'error',
-	'@pandacss/no-escape-hatch': 'error',
-	'@pandacss/no-hardcoded-color': 'error',
 	'@pandacss/no-important': 'error',
 	'@pandacss/no-invalid-token-paths': 'error',
 	'@pandacss/no-invalid-nesting': 'error',
 	'@pandacss/no-margin-properties': 'error',
 	'@pandacss/no-physical-properties': 'error',
-	'@pandacss/no-property-renaming': 'error',
-	'@pandacss/no-unsafe-token-fn-usage': 'error',
-	'@pandacss/prefer-longhand-properties': 'error',
-	'@pandacss/prefer-shorthand-properties': 'error',
-	'@pandacss/prefer-atomic-properties': 'error',
-	'@pandacss/prefer-composite-properties': 'error',
-	'@pandacss/prefer-unified-property-style': 'error',
+
+	// New / previously unlisted rules
+	'@pandacss/consistent-property-style': 'error',
+	'@pandacss/extraction-diagnostics': 'error',
+	'@pandacss/no-deprecated': 'error',
+	'@pandacss/no-descendant-selectors': 'error',
+	'@pandacss/no-primitive-token': 'error',
+	'@pandacss/no-shorthand-longhand-mix': 'error',
+	'@pandacss/prefer-text-style': 'error',
+	'@pandacss/prefer-token': 'error',
+
+	// Deprecated or removed upstream, no longer listed: '@pandacss/no-config-function-in-source', '@pandacss/no-dynamic-styling', '@pandacss/no-escape-hatch', '@pandacss/no-hardcoded-color', '@pandacss/no-property-renaming', '@pandacss/no-unsafe-token-fn-usage', '@pandacss/prefer-longhand-properties', '@pandacss/prefer-shorthand-properties', '@pandacss/prefer-atomic-properties', '@pandacss/prefer-composite-properties', '@pandacss/prefer-unified-property-style'
 ```
 ## [@vitest/eslint-plugin](https://github.com/vitest-dev/eslint-plugin-vitest)
 ```JavaScript
@@ -1567,7 +1986,6 @@
 
 	'vitest/prefer-strict-boolean-matchers': 'error',
 	'vitest/no-conditional-in-test': 'error',
-	'vitest/no-done-callback': 'off', //deprecated
 	'vitest/consistent-test-filename': ['error', { pattern: '.*\\.(spec|test)\\.[jt]s$' }],
 	'vitest/consistent-test-it': 'error',
 
@@ -1630,6 +2048,28 @@
 	'vitest/padding-around-expect-groups': 'error',
 	'vitest/padding-around-test-blocks': 'error',
 	'vitest/require-mock-type-parameters': 'error',
+
+	// New / previously unlisted rules
+	'vitest/consistent-each-for': 'error',
+	'vitest/consistent-vitest-vi': 'error',
+	'vitest/hoisted-apis-on-top': 'error',
+	'vitest/no-importing-vitest-globals': 'error',
+	'vitest/no-unneeded-async-expect-function': 'error',
+	'vitest/prefer-called-exactly-once-with': 'error',
+	'vitest/prefer-called-once': 'error',
+	'vitest/prefer-called-times': 'error',
+	'vitest/prefer-describe-function-title': 'error',
+	'vitest/prefer-expect-type-of': 'error',
+	'vitest/prefer-import-in-mock': 'error',
+	'vitest/prefer-importing-vitest-globals': 'error',
+	'vitest/prefer-mock-return-shorthand': 'error',
+	'vitest/prefer-to-have-been-called-times': 'error',
+	'vitest/require-awaited-expect-poll': 'error',
+	'vitest/require-test-timeout': 'error',
+	'vitest/unbound-method': 'error',
+	'vitest/warn-todo': 'error',
+
+	// Deprecated or removed upstream, no longer listed: 'vitest/no-done-callback'
 ```
 ## [eslint-plugin-svelte](https://github.com/sveltejs/eslint-plugin-svelte)
 ```JavaScript
@@ -1640,7 +2080,7 @@
 	'svelte/no-dupe-else-if-blocks': 'error',
 	'svelte/no-dupe-style-properties': 'error',
 	'svelte/no-inner-declarations': 'error',
-	'svelte/no-navigation-without-base': 'error',
+	'svelte/no-navigation-without-resolve': 'error', // was 'svelte/no-navigation-without-base' (deprecated)
 	'svelte/no-not-function-handler': 'error',
 	'svelte/no-object-in-text-mustaches': 'error',
 	'svelte/no-raw-special-elements': 'error',
@@ -1710,17 +2150,40 @@
 	'svelte/no-restricted-html-elements': 'off',
 	// 'svelte/experimental-require-slot-types': 'error',
 	// 'svelte/experimental-require-strict-events': 'off',
+
+	// New / previously unlisted rules
+	'svelte/experimental-require-slot-types': 'error',
+	'svelte/experimental-require-strict-events': 'error',
+	'svelte/max-lines-per-block': 'error',
+	'svelte/no-add-event-listener': 'error',
+	'svelte/no-at-const-tags': 'error',
+	'svelte/no-bind-value-on-checkable-inputs': 'error',
+	'svelte/no-conflicting-module-names': 'error',
+	'svelte/no-nested-style-tag': 'error',
+	'svelte/no-top-level-browser-globals': 'error',
+	'svelte/no-unnecessary-state-wrap': 'error',
+	'svelte/no-unused-props': 'error',
+	'svelte/prefer-attribute-interpolation': 'error',
+	'svelte/prefer-derived-over-derived-by': 'error',
+	'svelte/prefer-svelte-reactivity': 'error',
+	'svelte/prefer-writable-derived': 'error',
+	'svelte/require-event-prefix': 'error',
 ```
-## [eslint-plugin-tailwindcss](https://www.npmjs.com/package/eslint-plugin-tailwindcss)
+## [eslint-plugin-tailwindcss](https://github.com/francoismassart/eslint-plugin-tailwindcss) (v4 supports Tailwind CSS 4)
 ```JavaScript
         'tailwind/classnames-order': 'error',
 	'tailwind/enforces-negative-arbitrary-values': 'error',
 	'tailwind/enforces-shorthand': 'error',
-	'tailwind/migration-from-tailwind-2': 'error',
 	'tailwind/no-arbitrary-value': 'error',
 	'tailwind/no-contradicting-classname': 'error',
 	'tailwind/no-custom-classname': 'error',
 	'tailwind/no-unnecessary-arbitrary-value': 'error',
+
+	// New / previously unlisted rules
+	'tailwind/enforces-canonical-classname': 'error',
+	'tailwind/important-modifier-suffix': 'error',
+
+	// Deprecated or removed upstream, no longer listed: 'tailwind/migration-from-tailwind-2'
 ```
 ## [eslint-plugin-yml](https://github.com/ota-meshi/eslint-plugin-yml)
 ```JavaScript
@@ -1752,4 +2215,62 @@
 	'yml/sort-sequence-values': 'off',
 	'yml/spaced-comment': 'error',
 	'yml/vue-custom-block/no-parsing-error': 'error',
+
+	// New / previously unlisted rules
+	'yml/no-boolean-key': 'error',
+	'yml/no-trailing-spaces': 'error',
+```
+## [@eslint-community/eslint-plugin-eslint-comments](https://github.com/eslint-community/eslint-plugin-eslint-comments)
+```JavaScript
+	'eslint-comments/disable-enable-pair': 'error',
+	'eslint-comments/no-aggregating-enable': 'error',
+	'eslint-comments/no-duplicate-disable': 'error',
+	'eslint-comments/no-restricted-disable': 'error',
+	'eslint-comments/no-unlimited-disable': 'error',
+	'eslint-comments/no-unused-enable': 'error',
+	'eslint-comments/no-use': 'error',
+	'eslint-comments/require-description': 'error',
+```
+## [eslint-plugin-better-tailwindcss](https://github.com/schoero/eslint-plugin-better-tailwindcss) (alternative to eslint-plugin-tailwindcss)
+```JavaScript
+	'better-tailwindcss/enforce-canonical-classes': 'error',
+	'better-tailwindcss/enforce-consistent-class-order': 'error',
+	'better-tailwindcss/enforce-consistent-important-position': 'error',
+	'better-tailwindcss/enforce-consistent-line-wrapping': 'error',
+	'better-tailwindcss/enforce-consistent-variable-syntax': 'error',
+	'better-tailwindcss/enforce-consistent-variant-order': 'error',
+	'better-tailwindcss/enforce-logical-properties': 'error',
+	'better-tailwindcss/enforce-shorthand-classes': 'error',
+	'better-tailwindcss/no-concatenated-classes': 'error',
+	'better-tailwindcss/no-conflicting-classes': 'error',
+	'better-tailwindcss/no-deprecated-classes': 'error',
+	'better-tailwindcss/no-duplicate-classes': 'error',
+	'better-tailwindcss/no-restricted-classes': 'error',
+	'better-tailwindcss/no-unknown-classes': 'error',
+	'better-tailwindcss/no-unnecessary-whitespace': 'error',
+```
+## [eslint-plugin-boundaries](https://www.jsboundaries.dev/)
+```JavaScript
+	'boundaries/dependencies': 'error',
+	'boundaries/no-ignored-dependencies': 'error',
+	'boundaries/no-unknown-dependencies': 'error',
+	'boundaries/no-unknown-files': 'error',
+```
+## [@eslint/css](https://github.com/eslint/css)
+```JavaScript
+	'css/font-family-fallbacks': 'error',
+	'css/no-duplicate-imports': 'error',
+	'css/no-duplicate-keyframe-selectors': 'error',
+	'css/no-empty-blocks': 'error',
+	'css/no-important': 'error',
+	'css/no-invalid-at-rule-placement': 'error',
+	'css/no-invalid-at-rules': 'error',
+	'css/no-invalid-named-grid-areas': 'error',
+	'css/no-invalid-properties': 'error',
+	'css/no-unmatchable-selectors': 'error',
+	'css/prefer-logical-properties': 'error',
+	'css/relative-font-units': 'error',
+	'css/selector-complexity': 'error',
+	'css/use-baseline': 'error',
+	'css/use-layers': 'error',
 ```
